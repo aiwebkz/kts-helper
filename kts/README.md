@@ -124,6 +124,10 @@ git push -u origin kts-helper
 Artifacts запуска, без GitHub Release. Все необходимые reusable workflows находятся
 в репозитории. Он сохраняет настройки компиляторов/Flutter/vcpkg из upstream 1.5.3.
 
+Для повторной сборки только Apple Silicon выберите `target=macos-arm64`.
+Если GitHub не выделяет `macos-26`, укажите резервный `macos_arm64_runner=macos-15`.
+Windows и Intel в таком запуске повторно не собираются.
+
 Проверка конфигурации выполняется до тяжёлых сборок. Если сервер или ключ отсутствует,
 сборка остановится в `validate`. Для первой компиляции понадобятся загрузка зависимостей,
 время и доступные GitHub runner minutes; ARM64 runners могут зависеть от доступности

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Derive desktop setup jobs from the pinned upstream workflow, without editing it."""
 import copy
+import json
 from pathlib import Path
 import yaml
 
@@ -31,6 +32,7 @@ def main():
     }
     topmost = copy.deepcopy(upstream['jobs']['build-RustDeskTempTopMostWindow'])
     topmost['needs'] = ['validate']
+    topmost['if'] = "${{ inputs.target == 'all' }}"
     topmost['with']['upload-artifact'] = True
     jobs['build-RustDeskTempTopMostWindow'] = topmost
     for job_name in ['build-for-windows-flutter', 'build-for-macOS']:
@@ -52,6 +54,7 @@ def main():
         else:
             raise ValueError(f'Upstream build anchor missing: {job_name}')
         if job_name == 'build-for-windows-flutter':
+            job['if'] = "${{ inputs.target == 'all' }}"
             build_step['name'] = 'Build kts-helper'
             build_step['run'] = (
                 'python3 .\\build.py --portable --flutter --skip-portable-pack --hwcodec ${{ matrix.job.build-args }}\n'
@@ -78,6 +81,13 @@ python3 kts/package_source.py
 python3 kts/checksums.py
 '''.strip()}]
         else:
+            job['runs-on'] = "${{ matrix.job.arch == 'aarch64' && inputs.macos_arm64_runner || matrix.job.os }}"
+            matrix = job['strategy']['matrix']['job']
+            arm = [entry for entry in matrix if entry['arch'] == 'aarch64']
+            job['strategy']['matrix']['job'] = (
+                "${{ fromJSON(inputs.target == 'macos-arm64' && '" + json.dumps(arm) +
+                "' || '" + json.dumps(matrix) + "') }}"
+            )
             # The upstream build still supplies codec/toolchain compatibility for each arch.
             build_step['name'] = 'Build kts-helper'
             setup_steps += [build_step,
@@ -99,7 +109,13 @@ python3 kts/checksums.py
         job['steps'] = setup_steps
         jobs[job_name] = job
     workflow = {'name': 'Build kts-helper desktop',
-                'on': {'workflow_dispatch': {}},
+                'on': {'workflow_dispatch': {'inputs': {
+                    'target': {'description': 'Platforms to build', 'type': 'choice',
+                               'options': ['all', 'macos-arm64'], 'default': 'all'},
+                    'macos_arm64_runner': {'description': 'Apple Silicon runner (use macos-15 if macos-26 has no capacity)',
+                                          'type': 'choice', 'options': ['macos-26', 'macos-15'],
+                                          'default': 'macos-26'},
+                }}},
                 'permissions': {'contents': 'read'},
                 'concurrency': {'group': 'kts-build-${{ github.ref }}', 'cancel-in-progress': False},
                 'env': env, 'jobs': jobs}
