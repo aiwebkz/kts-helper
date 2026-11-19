@@ -1,0 +1,27 @@
+name: Check kts-helper configuration
+on:
+  workflow_dispatch:
+  push:
+    branches: [kts-helper]
+    paths: ["kts/**", "src/kts.rs", ".github/workflows/kts-*.yml"]
+  pull_request:
+    paths: ["kts/**", "src/kts.rs", ".github/workflows/kts-*.yml"]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: python3 -m pip install PyYAML==6.0.2
+      - run: python3 -m unittest discover -s kts/tests -v
+      - run: python3 kts/configure.py --preview --check
+      - name: Check desktop workflow is reproducible
+        run: |
+          python3 kts/generate_workflow.py
+          git diff --exit-code -- .github/workflows/kts-build.yml

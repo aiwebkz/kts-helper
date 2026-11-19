@@ -60,3 +60,16 @@ flutter/web/
 /third_party/libdrmtap/
 # Local git worktrees
 .worktrees/
+
+# kts-helper local deployment/build data
+/kts/server/.env
+/kts/server/data/
+/kts/dist/
+/kts/.venv/
+__pycache__/
+!/flutter/assets/icon.png
+!/flutter/assets/logo.png
+!/flutter/assets/logo_light.png
+!/flutter/assets/logo_dark.png
+!/kts/branding/*.png
+!/kts/branding/*.svg

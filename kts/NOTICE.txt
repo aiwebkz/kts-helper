@@ -1,0 +1,15 @@
+kts-helper is a modified version of RustDesk 1.5.3.
+Upstream: https://github.com/rustdesk/rustdesk
+Base commit: 95cca3f661f635b3cc85c04935fe8d96d8f432ef
+
+Modifications: product identity, desktop icons and theme colors,
+embedded self-hosted ID/relay server settings, default click approval,
+disabled upstream update checks/automatic updates, and artifact packaging.
+
+Original copyright notices and the GNU Affero General Public License v3
+are retained in LICENCE and the original source files.
+The corresponding modified source is supplied as kts-helper-source.tar.gz
+alongside each client build. Redistribute it with the client binaries.
+
+This program is distributed WITHOUT ANY WARRANTY, to the extent permitted
+by applicable law. See LICENCE for copying, modification and distribution terms.

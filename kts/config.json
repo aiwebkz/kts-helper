@@ -1,0 +1,8 @@
+{
+  "app_name": "kts-helper",
+  "bundle_id": "org.kts.helper",
+  "accent": "167D8D",
+  "id_server": "100.90.108.74:21116",
+  "relay_server": "100.90.108.74:21117",
+  "public_key": "qvUascqgT5jBENw0aYVVYjU6aErnSoOlW5l0uNa+8m8="
+}
