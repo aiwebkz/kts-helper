@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def files(path):
     return subprocess.check_output(
-        ['git', '-C', str(path), 'ls-files', '--cached', '--others', '--exclude-standard', '-z']
+        ['git', '-C', str(path), 'ls-files', '--cached', '-z']
     ).decode('utf-8').split('\0')
 
 
