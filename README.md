@@ -1,3 +1,12 @@
+# kts-helper
+
+Форк RustDesk для macOS и Windows с собственным оформлением и сервером через Tailscale.
+Инструкции и статус: [kts/README.md](kts/README.md).
+Обслуживание сервера: [kts/server/DEPLOYMENT.md](kts/server/DEPLOYMENT.md).
+Исходная версия — RustDesk 1.5.3; лицензия AGPL-3.0 сохранена.
+
+---
+
 <p align="center">
   <img src="res/logo-header.svg" alt="RustDesk - Your remote desktop"><br>
   <a href="#raw-steps-to-build">Build</a> •
