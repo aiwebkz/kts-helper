@@ -1,5 +1,7 @@
 # kts-helper — macOS и Windows
 
+Результаты сборки и ограничения: [BUILD_STATUS.md](BUILD_STATUS.md).
+
 Модифицированный RustDesk 1.5.3. Основа зафиксирована на commit
 `95cca3f661f635b3cc85c04935fe8d96d8f432ef`, подмодуль `hbb_common` —
 `fae47e024dd83cef6aaecde0aa7d11731df11649`.
